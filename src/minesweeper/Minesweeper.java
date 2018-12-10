@@ -185,8 +185,8 @@ public class Minesweeper {
 				ReportUtil.guessCount++;
 				Square[][] arrSquares = problem.getSquares();
 				List<Square> lstSquares = new ArrayList<Square>();
-				for(int i=0; i< arrSquares.length; i++){
-					for(int j=0; j<arrSquares.length; j++){
+				for(int i = 0; i < arrSquares.length; i++){
+					for(int j = 0; j < arrSquares.length; j++){
 						if(arrSquares[i][j].isEnabled()
 								&& !arrSquares[i][j].isMarked()){
 							lstSquares.add(arrSquares[i][j]);

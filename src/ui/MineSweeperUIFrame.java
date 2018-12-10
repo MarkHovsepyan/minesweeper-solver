@@ -28,9 +28,8 @@ public class MineSweeperUIFrame extends JFrame {
 	private MineFieldButton mines[][];
 	private ProblemManager problemManager;
 	private JLabel noOfMinesLabel;
-	/**
-	 * Create the frame.
-	 */
+
+
 	public MineSweeperUIFrame(ProblemManager problemManager) {
 		this.problemManager = problemManager;
 		Square[][] arrSquares = problemManager.getSquares();
@@ -108,9 +107,9 @@ public class MineSweeperUIFrame extends JFrame {
 	public void gameEnded(boolean won){
 		objTimer.stop();
 		if (won){
-			new JDialog(this, "YOU WON!!!").setVisible(true); 
+			new JDialog(this, "Success!!!").setVisible(true);
 		}else{
-			new JDialog(this, "U R DEAD BUDDY!!! SORRY !!! ").setVisible(true);
+			new JDialog(this, "Fail!!!").setVisible(true);
 		}
 	}
 	
@@ -134,7 +133,7 @@ public class MineSweeperUIFrame extends JFrame {
 				if(associatedSquare.isMarked()){
 					mines[i][j].setBackground(Color.GREEN);
 				}else if (!associatedSquare.isEnabled()){
-					mines[i][j].setBackground(Color.BLUE);
+					mines[i][j].setBackground(Color.GRAY);
 				}
 				mines[i][j].setEnabled(associatedSquare.isEnabled());
 			}
