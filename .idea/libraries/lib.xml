@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/gnuprologjava-0.2.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jacop-4.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jpl.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
