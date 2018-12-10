@@ -1,6 +1,3 @@
-/**
- * 
- */
 package minesweeper;
 
 import java.io.IOException;
@@ -10,13 +7,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import minesweeper.bean.Square;
-import minesweeper.csp.CspSolverUtil;
+import bean.Square;
+import csp.CspSolverUtil;
 
-/**
- * 
- *
- */
 public class MinesweepingAgent {
 
 	private Square[][] arrSquares;

@@ -1,8 +1,7 @@
-package minesweeper.bean;
+package bean;
 
 public class Square {
 
-	//private boolean containsMine;
 	private int noOfMinesAround;
 	private boolean enabled;
 	private boolean flagged;
@@ -17,26 +16,13 @@ public class Square {
 		this.marked = marked;
 	}
 
-	/*public Square(boolean containsMine, int x, int y){
-     this.containsMine = containsMine;
-     noOfMinesAround = -1;
-     enabled = true;
-     flagged = false;
-     locX = x;
-     locY = y;
-     }
-	 */
 	public Square(int x, int y) {
-		//this.containsMine = containsMine;
 		noOfMinesAround = -1;
 		enabled = true;
 		flagged = false;
 		locX = x;
 		locY = y;
 	}
-	/*public void setContainsMine(boolean containsMine) {
-     this.containsMine = containsMine;
-     }*/
 
 	public int getNoOfMinesAround() {
 		return noOfMinesAround;
@@ -62,10 +48,6 @@ public class Square {
 		this.flagged = flagged;
 	}
 
-	/*public boolean isContainsMine() {
-     return containsMine;
-     }
-	 */
 	@Override
 	public String toString() {
 		return "<" + locX + " , " + locY + "> No Of Mines Around : " + noOfMinesAround;

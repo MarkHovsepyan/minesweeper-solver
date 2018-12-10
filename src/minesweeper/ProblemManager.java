@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import minesweeper.bean.Square;
+import bean.Square;
 import ui.MineSweeperUIFrame;
 
 public class ProblemManager {

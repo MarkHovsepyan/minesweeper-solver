@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import minesweeper.bean.Square;
+import bean.Square;
 import ui.MineSweeperUIFrame;
 
 public class Minesweeper {
@@ -17,12 +17,8 @@ public class Minesweeper {
 	public static final int MEDIUM = 15;
 	public static final int NAIIVE = 10;
 
-	//
-	/**
-	 *
-	 */
+
 	public Minesweeper() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -32,8 +28,6 @@ public class Minesweeper {
 		if(args.length == 0){
 			generateReport();
 			System.exit(3);
-		}else{
-			//do nothing.
 		}
 		
 		int max_rows = MAX_ROWS;
@@ -50,14 +44,14 @@ public class Minesweeper {
 		}
 		int percentMines = -1;
 		switch(mode){
-		case 2:
-			percentMines = EXPERT;
+		case 0:
+            percentMines = NAIIVE;
 			break;
 		case 1:
 			percentMines = MEDIUM;
 			break;
-		case 0:
-			percentMines = NAIIVE;
+		case 2:
+            percentMines = EXPERT;
 			break;
 		default:
 			System.out.println("USAGE : Minesweeper <max_rows> <max_cols> <mode>\n"
@@ -97,9 +91,7 @@ public class Minesweeper {
 						}
 					}
 				}
-				if(lstSquares.size() == 0){
-					//do nothing.
-				}else{
+				if(lstSquares.size() != 0) {
 					int index = objRandom.nextInt(lstSquares.size());
 					Square randSquare = lstSquares.get(index);
 					System.out.println("GUESSED : " +randSquare.getLocX() +" , " +randSquare.getLocY());
@@ -201,9 +193,7 @@ public class Minesweeper {
 						}
 					}
 				}
-				if(lstSquares.size() == 0){
-					//do nothing.
-				}else{
+				if(lstSquares.size() != 0) {
 					int index = objRandom.nextInt(lstSquares.size());
 					Square randSquare = lstSquares.get(index);
 					System.out.println("GUESSED : " +randSquare.getLocX() +" , " +randSquare.getLocY());

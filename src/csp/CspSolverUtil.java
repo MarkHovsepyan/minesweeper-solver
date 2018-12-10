@@ -1,14 +1,7 @@
-/**
- * 
- */
-package minesweeper.csp;
+package csp;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,12 +18,9 @@ import org.jacop.search.SelectChoicePoint;
 import minesweeper.MinesweepingAgent;
 import minesweeper.ProblemManager;
 import minesweeper.ReportUtil;
-import minesweeper.bean.Square;
+import bean.Square;
 
-/**
- * @author blackShadow
- *
- */
+
 public class CspSolverUtil {
 
 	private Store objStore;
@@ -89,7 +79,7 @@ public class CspSolverUtil {
 				}
 			}
 
-			//Filtering out the ones with one solution
+			//Getting the ones with single solution
 			for(Square objSquare : solutionMap.keySet()){
 				int count = solutionMap.get(objSquare).size();
 				if(count == 1){
@@ -115,6 +105,5 @@ public class CspSolverUtil {
 		return safeSet;
 
 	}
-
 
 }

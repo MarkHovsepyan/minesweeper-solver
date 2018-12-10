@@ -1,7 +1,6 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -19,9 +18,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-
-import minesweeper.bean.Square;
+import bean.Square;
 import minesweeper.ProblemManager;
 
 public class MineSweeperUIFrame extends JFrame {
@@ -35,8 +32,8 @@ public class MineSweeperUIFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MineSweeperUIFrame(ProblemManager problemManager) {
-		this.problemManager =problemManager;
-		Square[][] arrSquares =problemManager.getSquares();
+		this.problemManager = problemManager;
+		Square[][] arrSquares = problemManager.getSquares();
 		setTitle("Minesweeper");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -71,8 +68,6 @@ public class MineSweeperUIFrame extends JFrame {
 				}
 				mines[i][j] = btnNewButton;
 				mines[i][j].setAssociatedSquare(arrSquares[i][j]);
-
-				btnNewButton.addActionListener(new MineActionListener());
 			}
 		}
 
@@ -86,13 +81,13 @@ public class MineSweeperUIFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String text = "Time : ";
 				if(count  > 3600 ){
-					text += new Integer(count / 3600 ).toString() +"h : " +new Integer((count % 3600   ) / 60 ).toString()
-							+"m : " +new Integer( (count % 3600) % 60).toString() +"s";
+					text += Integer.toString(count / 3600) +"h : " + Integer.toString((count % 3600) / 60)
+							+"m : " + Integer.toString((count % 3600) % 60) +"s";
 				}else if (count > 60 ){
-					text += new Integer(count  / 60 ).toString()
-							+"m : " +new Integer( count % 60).toString() +"s";
+					text += Integer.toString(count / 60)
+							+"m : " + Integer.toString(count % 60) +"s";
 				}else {
-					text += new Integer(count) +"s";
+					text += count +"s";
 				}
 				timer.setText(text);
 				count++;
@@ -131,12 +126,11 @@ public class MineSweeperUIFrame extends JFrame {
 				Square associatedSquare = mines[i][j].getAssociatedSquare();
 				if(associatedSquare.getNoOfMinesAround() > 0 && 
 						!problemManager.containsMine(associatedSquare.getLocX(),associatedSquare.getLocY())){
-					mines[i][j].setText(new Integer(associatedSquare.getNoOfMinesAround()).toString());
+					mines[i][j].setText(Integer.toString(associatedSquare.getNoOfMinesAround()));
 					mines[i][j].getAssociatedSquare().setEnabled(false);
 					mines[i][j].setEnabled(false);
-				}else{
-					//do nothing.
 				}
+
 				if(associatedSquare.isMarked()){
 					mines[i][j].setBackground(Color.GREEN);
 				}else if (!associatedSquare.isEnabled()){
@@ -147,5 +141,4 @@ public class MineSweeperUIFrame extends JFrame {
 		}
 		super.repaint();
 	}
-
 }
