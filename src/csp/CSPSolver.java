@@ -31,7 +31,7 @@ public class CSPSolver {
 
 
 	public Set<Tile> solve(Map<Tile, Set<Tile>> input){
-		Map<Tile, IntVar> varMap = new HashMap<Tile, IntVar>();
+		Map<Tile, IntVar> varMap = new HashMap<>();
 		for(Tile exploredTile : input.keySet()){
 			Set<Tile> vars = input.get(exploredTile);
 			IntVar[] arrVar = new IntVar[vars.size()];
@@ -56,21 +56,21 @@ public class CSPSolver {
 
 		IntVar[] vars = new IntVar[varMap.values().size()];
 
-		Map<Integer, Tile> TileMap = new HashMap<Integer, Tile>();
-		Map<Tile, Set<Integer>> solutionMap = new HashMap<Tile, Set<Integer>>();
+		Map<Integer, Tile> TileMap = new HashMap<>();
+		Map<Tile, Set<Integer>> solutionMap = new HashMap<>();
 		int index = 0;
 		for(Tile objTile : varMap.keySet()){
 			vars[index] = varMap.get(objTile);
 			TileMap.put(index++, objTile);
-			solutionMap.put(objTile, new HashSet<Integer>());
+			solutionMap.put(objTile, new HashSet<>());
 		}
 
-		Search<IntVar> label = new DepthFirstSearch<IntVar>();
-		SelectChoicePoint<IntVar> select = new InputOrderSelect<IntVar>(objStore, vars, new IndomainMin<IntVar>() );
+		Search<IntVar> label = new DepthFirstSearch<>();
+		SelectChoicePoint<IntVar> select = new InputOrderSelect<>(objStore, vars, new IndomainMin<IntVar>());
 		label.getSolutionListener().searchAll(true);
 		label.getSolutionListener().recordSolutions(true);
 		boolean result = label.labeling(objStore, select);
-		Set<Tile> safeSet = new HashSet<Tile>();
+		Set<Tile> safeSet = new HashSet<>();
 		if(result){
 			for (int i=1; i<=label.getSolutionListener().solutionsNo(); i++){
 				for (int j=0; j<label.getSolution(i).length; j++){

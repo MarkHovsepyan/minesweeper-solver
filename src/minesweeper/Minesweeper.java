@@ -12,9 +12,9 @@ public class Minesweeper {
 	private static final int MAX_ROWS = 20;
 	private static final int MAX_COLS = 20;
 
+	private static final int NAIVE = 10;
 	private static final int EXPERT = 20;
 	private static final int MEDIUM = 15;
-	private static final int NAIIVE = 10;
 
 	public static void main(String[] args) {
 		if(args.length == 0){
@@ -30,14 +30,15 @@ public class Minesweeper {
 			max_cols = Integer.parseInt(args[1]);
 			mode = Integer.parseInt(args[2]);
 		}else{
-			System.out.println("USAGE : Minesweeper <max_rows> <max_cols> <mode>\n"
-					+ "\tMODE VALUES : 0 - NAIIVE, 1 - MEDIUM, 2 - EXPERT");
+			System.out.println("USAGE: Minesweeper <max_rows> <max_cols> <mode>\n"
+					+ "\tMODE VALUES: 0 - NAIVE, 1 - MEDIUM, 2 - EXPERT");
 			System.exit(3);
 		}
+
 		int minesPercentage = -1;
 		switch(mode){
 		case 0:
-            minesPercentage = NAIIVE;
+            minesPercentage = NAIVE;
 			break;
 		case 1:
 			minesPercentage = MEDIUM;
@@ -46,16 +47,14 @@ public class Minesweeper {
             minesPercentage = EXPERT;
 			break;
 		default:
-			System.out.println("USAGE : Minesweeper <max_rows> <max_cols> <mode>\n"
-					+ "\tMODE VALUES : 0 - NAIIVE, 1 - MEDIUM, 2 - EXPERT");
+			System.out.println("USAGE: Minesweeper <max_rows> <max_cols> <mode>\n"
+					+ "\tMODE VALUES: 0 - NAIVE, 1 - MEDIUM, 2 - EXPERT");
 			System.exit(3);
 		}
 
 		final levelCreator problem = new levelCreator(max_rows, max_cols, minesPercentage);
 
-		final int rows = max_rows;
-		final int cols = max_cols;
-		final GameUI frame = new GameUI(problem);
+        final GameUI frame = new GameUI(problem);
 		problem.setFrame(frame);
 		final SolverAgent agent = new SolverAgent(problem.getTiles(), levelCreator.getNoOfMines());
 		frame.setVisible(true);
@@ -74,19 +73,19 @@ public class Minesweeper {
 			if(safeTiles == null){
 				ReportTool.guessCount++;
 				Tile[][] tileArray = problem.getTiles();
-				List<Tile> listOfTiles = new ArrayList<Tile>();
-				for(int i=0; i< tileArray.length; i++){
-					for(int j=0; j<tileArray.length; j++){
-						if(tileArray[i][j].isEnabled()
-								&& !tileArray[i][j].isMarked()){
-							listOfTiles.add(tileArray[i][j]);
-						}
-					}
-				}
+				List<Tile> listOfTiles = new ArrayList<>();
+                for (Tile[] aTileArray : tileArray) {
+                    for (int j = 0; j < tileArray.length; j++) {
+                        if (aTileArray[j].isEnabled()
+                                && !aTileArray[j].isMarked()) {
+                            listOfTiles.add(aTileArray[j]);
+                        }
+                    }
+                }
 				if(listOfTiles.size() != 0) {
 					int index = objRandom.nextInt(listOfTiles.size());
 					Tile randTile = listOfTiles.get(index);
-					System.out.println("GUESSED : " +randTile.getLocX() +" , " +randTile.getLocY());
+					System.out.println("GUESSED: " +randTile.getLocX() +" , " +randTile.getLocY());
 					problem.updateModel(randTile.getLocX(), randTile.getLocY());
 				}
 				frame.repaint();
@@ -97,7 +96,7 @@ public class Minesweeper {
 				}
 			}
 		}
-		System.out.println("Count : " + levelCreator.count);
+		System.out.println("Count: " + levelCreator.count);
 		if(levelCreator.noOfMines == 0){
 			frame.gameEnded(true);
 		}else{
@@ -109,8 +108,8 @@ public class Minesweeper {
 	private static void createReport(){
 		int[] cardinality = new int[]{5, 10, 15, 20, 25};
 		int[] modes = new int[]{0,1,2};
-		long startTime = 0L;
-		long endTime = 0L;
+		long startTime;
+		long endTime;
 		for(int i : modes){
 			for(int j : cardinality){
 				startTime = System.currentTimeMillis();
@@ -125,7 +124,7 @@ public class Minesweeper {
 	private static String getMode(int mode){
 		switch(mode){
 		case 0:
-			return "NAIIVE";
+			return "NAIVE";
 		case 1:
 			return "MEDIUM";
 		case 2:
@@ -145,19 +144,17 @@ public class Minesweeper {
 			minesPercentage = MEDIUM;
 			break;
 		case 0:
-			minesPercentage = NAIIVE;
+			minesPercentage = NAIVE;
 			break;
 		default:
 			System.out.println("USAGE : Minesweeper <max_rows> <max_cols> <mode>\n"
-					+ "\tMODE VALUES : 0 - NAIIVE, 1 - MEDIUM, 2 - EXPERT");
+					+ "\tMODE VALUES : 0 - NAIVE, 1 - MEDIUM, 2 - EXPERT");
 			System.exit(3);
 		}
 
 		final levelCreator problem = new levelCreator(max_rows, max_cols, minesPercentage);
 
-		final int rows = max_rows;
-		final int cols = max_cols;
-		final GameUI frame = new GameUI(problem);
+        final GameUI frame = new GameUI(problem);
 		problem.setFrame(frame);
 		final SolverAgent agent = new SolverAgent(problem.getTiles(), levelCreator.getNoOfMines());
 		frame.setVisible(true);
@@ -176,19 +173,19 @@ public class Minesweeper {
 			if(safeTiles == null){
 				ReportTool.guessCount++;
 				Tile[][] tileArray = problem.getTiles();
-				List<Tile> listOfTiles = new ArrayList<Tile>();
-				for(int i = 0; i < tileArray.length; i++){
-					for(int j = 0; j < tileArray.length; j++){
-						if(tileArray[i][j].isEnabled()
-								&& !tileArray[i][j].isMarked()){
-							listOfTiles.add(tileArray[i][j]);
-						}
-					}
-				}
+				List<Tile> listOfTiles = new ArrayList<>();
+                for (Tile[] aTileArray : tileArray) {
+                    for (int j = 0; j < tileArray.length; j++) {
+                        if (aTileArray[j].isEnabled()
+                                && !aTileArray[j].isMarked()) {
+                            listOfTiles.add(aTileArray[j]);
+                        }
+                    }
+                }
 				if(listOfTiles.size() != 0) {
 					int index = objRandom.nextInt(listOfTiles.size());
 					Tile randTile = listOfTiles.get(index);
-					System.out.println("GUESSED : " +randTile.getLocX() +" , " +randTile.getLocY());
+					System.out.println("GUESSED: " +randTile.getLocX() +" , " +randTile.getLocY());
 					problem.updateModel(randTile.getLocX(), randTile.getLocY());
 				}
 				frame.repaint();
@@ -199,7 +196,7 @@ public class Minesweeper {
 				}
 			}
 		}
-		System.out.println("Count : " + levelCreator.count);
+		System.out.println("Count: " + levelCreator.count);
 		if(levelCreator.noOfMines == 0){
 			frame.gameEnded(true);
 		}else{

@@ -51,7 +51,7 @@ public class GameUI extends JFrame {
 		contentPane.add(topPanel, BorderLayout.NORTH);
 		topPanel.setLayout(new GridLayout(1, 3, 4, 0));
 
-		noOfMinesLabel = new JLabel("No Of Mines : " + levelCreator.getNoOfMines());
+		noOfMinesLabel = new JLabel("No Of Mines : " + minesweeper.levelCreator.getNoOfMines());
 		topPanel.add(noOfMinesLabel);
 
 		JPanel mineFieldPanel = new JPanel();
@@ -119,23 +119,23 @@ public class GameUI extends JFrame {
 
 	@Override
 	public void repaint(){		
-		noOfMinesLabel.setText("No of Mines : " + levelCreator.noOfMines);
-		for(int i = 0 ; i < mines.length; i++){
-			for(int j = 0 ; j < mines[0].length; j++){
-				Tile associatedTile = mines[i][j].getAssociatedTile();
-				if(associatedTile.getNoOfMinesAround() > 0 &&
-						!levelCreator.containsMine(associatedTile.getLocX(),associatedTile.getLocY())){
-					mines[i][j].setText(Integer.toString(associatedTile.getNoOfMinesAround()));
-					mines[i][j].getAssociatedTile().setEnabled(false);
-					mines[i][j].setEnabled(false);
+		noOfMinesLabel.setText("No of Mines : " + minesweeper.levelCreator.noOfMines);
+		for (TileButton[] mine : mines) {
+			for (int j = 0; j < mines[0].length; j++) {
+				Tile associatedTile = mine[j].getAssociatedTile();
+				if (associatedTile.getNoOfMinesAround() > 0 &&
+						!levelCreator.containsMine(associatedTile.getLocX(), associatedTile.getLocY())) {
+					mine[j].setText(Integer.toString(associatedTile.getNoOfMinesAround()));
+					mine[j].getAssociatedTile().setEnabled(false);
+					mine[j].setEnabled(false);
 				}
 
-				if(associatedTile.isMarked()){
-					mines[i][j].setBackground(Color.GREEN);
-				}else if (!associatedTile.isEnabled()){
-					mines[i][j].setBackground(Color.GRAY);
+				if (associatedTile.isMarked()) {
+					mine[j].setBackground(Color.GREEN);
+				} else if (!associatedTile.isEnabled()) {
+					mine[j].setBackground(Color.GRAY);
 				}
-				mines[i][j].setEnabled(associatedTile.isEnabled());
+				mine[j].setEnabled(associatedTile.isEnabled());
 			}
 		}
 		super.repaint();

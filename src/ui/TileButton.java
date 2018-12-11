@@ -10,15 +10,15 @@ public class TileButton extends JButton {
 	
 	private Tile associatedSquare;
 	
-	public Tile getAssociatedTile() {
+	Tile getAssociatedTile() {
 		return associatedSquare;
 	}
 
-	public void setAssociatedTile(Tile associatedSquare) {
+	void setAssociatedTile(Tile associatedSquare) {
 		this.associatedSquare = associatedSquare;
 	}
 
-	public TileButton() {
+	TileButton() {
 	}
 
 	public TileButton(Icon icon) {

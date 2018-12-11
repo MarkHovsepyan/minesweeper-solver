@@ -12,39 +12,38 @@ public class SolverAgent {
     private Tile[][] tileArray;
     public static int noOfMines;
 
-    public SolverAgent(Tile[][] tileArray, int noOfMines) {
+    SolverAgent(Tile[][] tileArray, int noOfMines) {
         this.tileArray = tileArray;
-        this.noOfMines = noOfMines;
+        SolverAgent.noOfMines = noOfMines;
     }
 
-    public Set<Tile> solve() {
+    Set<Tile> solve() {
         CSPSolver objCsp = new CSPSolver();
         Map<Tile, Set<Tile>> inputMap = generateInputForCsp();
         if (inputMap == null) {
-            //Probably all the Tiles equals no of mines
-            for (int i = 0; i < tileArray.length; i++) {
+            //Probably all the Tiles is equal to the no of mines
+            for (Tile[] aTileArray : tileArray) {
                 for (int j = 0; j < tileArray[0].length; j++) {
-                    if (tileArray[i][j].isEnabled()) {
-                        tileArray[i][j].setMarked(true);
+                    if (aTileArray[j].isEnabled()) {
+                        aTileArray[j].setMarked(true);
                         noOfMines--;
                         levelCreator.noOfMines--;
                     }
                 }
             }
             return null;
-        } else {
-
         }
+
         Set<Tile> safeTiles = objCsp.solve(inputMap);
         return safeTiles.isEmpty() ? null : safeTiles;
     }
 
     private Map<Tile, Set<Tile>> generateInputForCsp() {
 
-        Map<Tile, Set<Tile>> retMap = new HashMap<Tile, Set<Tile>>();
+        Map<Tile, Set<Tile>> retMap = new HashMap<>();
         Set<Tile> exploredTiles = getExploredTiles();
         int noOfUnexploredMines = 0;
-        Set<Tile> setUnexplored = new HashSet<Tile>();
+        Set<Tile> setUnexplored = new HashSet<>();
         for (Tile exploredTile : exploredTiles) {
             Set<Tile> unexploredNeighbours = getUnexploredNeighbours(exploredTile);
             retMap.put(exploredTile, unexploredNeighbours);
@@ -60,12 +59,12 @@ public class SolverAgent {
     }
 
     private Set<Tile> getExploredTiles() {
-        Set<Tile> retSet = new HashSet<Tile>();
+        Set<Tile> retSet = new HashSet<>();
 
-        for (int i = 0; i < tileArray.length; i++) {
-            for (int j = 0; j < tileArray[i].length; j++) {
-                if (tileArray[i][j].getNoOfMinesAround() > 0 && !tileArray[i][j].isEnabled()) {
-                    retSet.add(tileArray[i][j]);
+        for (Tile[] aTileArray : tileArray) {
+            for (Tile anATileArray : aTileArray) {
+                if (anATileArray.getNoOfMinesAround() > 0 && !anATileArray.isEnabled()) {
+                    retSet.add(anATileArray);
                 }
             }
         }
@@ -78,7 +77,7 @@ public class SolverAgent {
 
         int x = objTile.getLocX();
         int y = objTile.getLocY();
-        Set<Tile> retSet = new HashSet<Tile>();
+        Set<Tile> retSet = new HashSet<>();
 
         if (y - 1 >= 0) {
             if (tileArray[x][y - 1].isEnabled()) {

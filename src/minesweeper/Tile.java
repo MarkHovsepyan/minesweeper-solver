@@ -16,7 +16,7 @@ public class Tile {
 		this.marked = marked;
 	}
 
-	public Tile(int x, int y) {
+	Tile(int x, int y) {
 		noOfMinesAround = -1;
 		enabled = true;
 		flagged = false;
@@ -28,7 +28,7 @@ public class Tile {
 		return noOfMinesAround;
 	}
 
-	public void setNoOfMinesAround(int noOfMinesAround) {
+	void setNoOfMinesAround(int noOfMinesAround) {
 		this.noOfMinesAround = noOfMinesAround;
 	}
 

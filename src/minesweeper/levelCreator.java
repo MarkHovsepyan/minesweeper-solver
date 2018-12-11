@@ -15,17 +15,17 @@ public class levelCreator {
 	public static int noOfMines;
 	private GameUI frame;
 	private boolean gameOver;
-	public static int count = 0;
+	static int count = 0;
 	
-	public boolean isGameOver(){
+	boolean isGameOver(){
 		return gameOver;
 	}
 
-	public void setFrame(GameUI frame) {
+	void setFrame(GameUI frame) {
 		this.frame = frame;
 	}
 
-	public levelCreator(int rows, int columns, int percent_mines){
+	levelCreator(int rows, int columns, int percent_mines){
 		tileArray = new Tile[rows][columns];
 		max_rows = rows;
 		max_cols = columns;
@@ -73,7 +73,7 @@ public class levelCreator {
 	public boolean containsMine(int x, int y){
 		return mineLocations.contains(x * max_cols+y);
 	}
-	public void updateModel(int x, int y){
+	void updateModel(int x, int y){
 		if(containsMine(x, y)){
 			System.out.println("MINE AT: " +x +" - " +y);
 			ReportTool.minesAttackedCount++;
@@ -98,23 +98,15 @@ public class levelCreator {
 	
 						updateModel(neighbour.getLocX(), neighbour.getLocY());
 			
-					}else if (neighbour.isMarked()){
-			
-					}else{
-
 					}
-				}
-			}else{
-
+                }
 			}
-		}else{
-		
-		}
+        }
 
-	}
+    }
 
 	private Set<Tile> getAdjacentTiles(int x, int y){
-		Set<Tile> retSet = new HashSet<Tile>();
+		Set<Tile> retSet = new HashSet<>();
 		if(x-1 >= 0){
 			if (y-1 >= 0 ) {
 				retSet.add(tileArray[x-1][y-1]) ;
@@ -141,6 +133,4 @@ public class levelCreator {
 		}
 		return retSet;
 	}
-
-
 }
