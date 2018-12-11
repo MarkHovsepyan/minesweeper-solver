@@ -19,31 +19,22 @@ public class ReportTool {
 		try {
 			if(!new File("results.csv").exists()){
 				PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("results.csv", true)));
-			    out.println("CARDINALITY,TIME TAKEN,MODE,GUESS COUNT, MINES ATTACKED COUNT, SOLUTION FOUND, NO SOLUTION FOUND, AMBIGUOUS SOLUTION FOUND");
+			    out.println("CARDINALITY, TIME TAKEN, MODE, GUESS COUNT, MINES ATTACKED COUNT, SOLUTION FOUND, NO SOLUTION FOUND, AMBIGUOUS SOLUTION FOUND");
 			    out.close();
 			}
 		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("results.csv", true)));
 
-		    String line = cardinality +"," +time +"," +mode +"," +guessCount +"," +minesAttackedCount +","+solutionFound+"," +noSolutionFound +"," +ambiguous;
+		    String line = cardinality +", " +time +", " +mode +", " +guessCount +", " +minesAttackedCount +", "+solutionFound+", " +noSolutionFound +", " +ambiguous;
 		    out.println(line);
 		    out.close();
 		} catch (IOException e) {
-		    //exception handling left as an exercise for the reader
+		    //add exception later
 		}
 	}
 	public static void print(int cardinality, long time, String mode){
-		System.out.println("CARDINALITY,TIME TAKEN,MODE,GUESS COUNT, MINES ATTACKED COUNT, SOLUTION FOUND, NO SOLUTION FOUND, AMBIGUOUS SOLUTION FOUND");
-		String line = cardinality +"," +time +"," +mode +"," +guessCount +"," +minesAttackedCount +","+solutionFound+"," +noSolutionFound +"," +ambiguous;
+		System.out.println("CARDINALITY, TIME TAKEN, MODE,GUESS COUNT, MINES ATTACKED COUNT, SOLUTION FOUND, NO SOLUTION FOUND, AMBIGUOUS SOLUTION FOUND");
+		String line = cardinality +", " +time +", " +mode +", " +guessCount +", " +minesAttackedCount +", "+solutionFound+", " +noSolutionFound +", " +ambiguous;
 	    System.out.println(line);
-	}
-	
-	public static void initialize(){
-		guessCount = 0;
-		minesAttackedCount = 0;
-		solutionFound = 0;
-		noSolutionFound = 0;
-		ambiguous = 0;
-
 	}
 
 }

@@ -50,7 +50,7 @@ public class Tile {
 
 	@Override
 	public String toString() {
-		return "<" + locX + " , " + locY + "> No Of Mines Around : " + noOfMinesAround;
+		return "<" + locX + " , " + locY + "> Number of Mines Around : " + noOfMinesAround;
 	}
 
 	@Override

@@ -102,8 +102,7 @@ public class CSPSolver {
 		}else{
 			ReportTool.noSolutionFound++;
 		}
+
 		return safeSet;
-
 	}
-
 }
