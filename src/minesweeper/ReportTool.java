@@ -32,7 +32,7 @@ public class ReportTool {
 		}
 	}
 	public static void print(int cardinality, long time, String mode){
-		System.out.println("CARDINALITY, TIME TAKEN, MODE,GUESS COUNT, MINES ATTACKED COUNT, SOLUTION FOUND, NO SOLUTION FOUND, AMBIGUOUS SOLUTION FOUND");
+		System.out.println("CARDINALITY, TIME TAKEN, MODE, GUESS COUNT, MINES ATTACKED COUNT, SOLUTION FOUND, NO SOLUTION FOUND, AMBIGUOUS SOLUTION FOUND");
 		String line = cardinality +", " +time +", " +mode +", " +guessCount +", " +minesAttackedCount +", "+solutionFound+", " +noSolutionFound +", " +ambiguous;
 	    System.out.println(line);
 	}
