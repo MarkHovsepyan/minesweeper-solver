@@ -18,27 +18,27 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import bean.Square;
-import minesweeper.ProblemManager;
+import minesweeper.Tile;
+import minesweeper.levelCreator;
 
-public class MineSweeperUIFrame extends JFrame {
+public class GameUI extends JFrame {
 
 	private JPanel contentPane;
 	private Timer objTimer;
-	private MineFieldButton mines[][];
-	private ProblemManager problemManager;
+	private TileButton mines[][];
+	private levelCreator levelCreator;
 	private JLabel noOfMinesLabel;
 
 
-	public MineSweeperUIFrame(ProblemManager problemManager) {
-		this.problemManager = problemManager;
-		Square[][] arrSquares = problemManager.getSquares();
+	public GameUI(levelCreator levelCreator) {
+		this.levelCreator = levelCreator;
+		Tile[][] tileArray = levelCreator.getTiles();
 		setTitle("Minesweeper");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		int rows = arrSquares.length;
-		int cols = arrSquares[0].length;
-		mines = new MineFieldButton[rows][cols];
+		int rows = tileArray.length;
+		int cols = tileArray[0].length;
+		mines = new TileButton[rows][cols];
 
 		setBounds(100, 100, 100 + rows * 50, cols * 25 + 100);
 		contentPane = new JPanel();
@@ -51,22 +51,22 @@ public class MineSweeperUIFrame extends JFrame {
 		contentPane.add(topPanel, BorderLayout.NORTH);
 		topPanel.setLayout(new GridLayout(1, 3, 4, 0));
 
-		noOfMinesLabel = new JLabel("No Of Mines : " +problemManager.getNoOfMines());
+		noOfMinesLabel = new JLabel("No Of Mines : " + levelCreator.getNoOfMines());
 		topPanel.add(noOfMinesLabel);
 
 		JPanel mineFieldPanel = new JPanel();
 		contentPane.add(mineFieldPanel, BorderLayout.CENTER);
-		mineFieldPanel.setLayout(new GridLayout(arrSquares.length, arrSquares[0].length));
+		mineFieldPanel.setLayout(new GridLayout(tileArray.length, tileArray[0].length));
 
-		for(int i=0; i< arrSquares.length; i++){
-			for(int j=0; j<arrSquares[i].length; j++){
-				MineFieldButton btnNewButton = new MineFieldButton();
+		for(int i=0; i< tileArray.length; i++){
+			for(int j=0; j<tileArray[i].length; j++){
+				TileButton btnNewButton = new TileButton();
 				mineFieldPanel.add(btnNewButton);
-				if(problemManager.containsMine(i, j)){
+				if(levelCreator.containsMine(i, j)){
 					btnNewButton.setBackground(Color.RED);
 				}
 				mines[i][j] = btnNewButton;
-				mines[i][j].setAssociatedSquare(arrSquares[i][j]);
+				mines[i][j].setAssociatedTile(tileArray[i][j]);
 			}
 		}
 
@@ -95,15 +95,15 @@ public class MineSweeperUIFrame extends JFrame {
 		objTimer.start();
 	}
 
-	public MineFieldButton[][] getMines(){
+	public TileButton[][] getMines(){
 		return mines;
 	}
 
 	public void disableSquare(int x, int y){
 		mines[x][y].setEnabled(false);
-		mines[x][y].getAssociatedSquare().setEnabled(false);
+		mines[x][y].getAssociatedTile().setEnabled(false);
 	}
-	
+
 	public void gameEnded(boolean won){
 		objTimer.stop();
 		if (won){
@@ -119,23 +119,23 @@ public class MineSweeperUIFrame extends JFrame {
 
 	@Override
 	public void repaint(){		
-		noOfMinesLabel.setText("No of Mines : " +ProblemManager.noOfMines);
+		noOfMinesLabel.setText("No of Mines : " + levelCreator.noOfMines);
 		for(int i = 0 ; i < mines.length; i++){
 			for(int j = 0 ; j < mines[0].length; j++){
-				Square associatedSquare = mines[i][j].getAssociatedSquare();
-				if(associatedSquare.getNoOfMinesAround() > 0 && 
-						!problemManager.containsMine(associatedSquare.getLocX(),associatedSquare.getLocY())){
-					mines[i][j].setText(Integer.toString(associatedSquare.getNoOfMinesAround()));
-					mines[i][j].getAssociatedSquare().setEnabled(false);
+				Tile associatedTile = mines[i][j].getAssociatedTile();
+				if(associatedTile.getNoOfMinesAround() > 0 &&
+						!levelCreator.containsMine(associatedTile.getLocX(),associatedTile.getLocY())){
+					mines[i][j].setText(Integer.toString(associatedTile.getNoOfMinesAround()));
+					mines[i][j].getAssociatedTile().setEnabled(false);
 					mines[i][j].setEnabled(false);
 				}
 
-				if(associatedSquare.isMarked()){
+				if(associatedTile.isMarked()){
 					mines[i][j].setBackground(Color.GREEN);
-				}else if (!associatedSquare.isEnabled()){
+				}else if (!associatedTile.isEnabled()){
 					mines[i][j].setBackground(Color.GRAY);
 				}
-				mines[i][j].setEnabled(associatedSquare.isEnabled());
+				mines[i][j].setEnabled(associatedTile.isEnabled());
 			}
 		}
 		super.repaint();

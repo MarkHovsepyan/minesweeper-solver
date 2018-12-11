@@ -1,6 +1,6 @@
-package bean;
+package minesweeper;
 
-public class Square {
+public class Tile {
 
 	private int noOfMinesAround;
 	private boolean enabled;
@@ -16,7 +16,7 @@ public class Square {
 		this.marked = marked;
 	}
 
-	public Square(int x, int y) {
+	public Tile(int x, int y) {
 		noOfMinesAround = -1;
 		enabled = true;
 		flagged = false;
@@ -68,9 +68,9 @@ public class Square {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Square) {
-			Square otherSquare = (Square) obj;
-			return otherSquare.getLocX() == locX && otherSquare.getLocY() == locY;
+		if (obj instanceof Tile) {
+			Tile otherTile = (Tile) obj;
+			return otherTile.getLocX() == locX && otherTile.getLocY() == locY;
 		}
 		return false;
 	}

@@ -5,28 +5,20 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import bean.Square;
-import ui.MineSweeperUIFrame;
+import ui.GameUI;
 
 public class Minesweeper {
 
-	public static final int MAX_ROWS = 20;
-	public static final int MAX_COLS = 20;
+	private static final int MAX_ROWS = 20;
+	private static final int MAX_COLS = 20;
 
-	public static final int EXPERT = 20;
-	public static final int MEDIUM = 15;
-	public static final int NAIIVE = 10;
+	private static final int EXPERT = 20;
+	private static final int MEDIUM = 15;
+	private static final int NAIIVE = 10;
 
-
-	public Minesweeper() {
-	}
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		if(args.length == 0){
-			generateReport();
+			createReport();
 			System.exit(3);
 		}
 		
@@ -42,16 +34,16 @@ public class Minesweeper {
 					+ "\tMODE VALUES : 0 - NAIIVE, 1 - MEDIUM, 2 - EXPERT");
 			System.exit(3);
 		}
-		int percentMines = -1;
+		int minesPercentage = -1;
 		switch(mode){
 		case 0:
-            percentMines = NAIIVE;
+            minesPercentage = NAIIVE;
 			break;
 		case 1:
-			percentMines = MEDIUM;
+			minesPercentage = MEDIUM;
 			break;
 		case 2:
-            percentMines = EXPERT;
+            minesPercentage = EXPERT;
 			break;
 		default:
 			System.out.println("USAGE : Minesweeper <max_rows> <max_cols> <mode>\n"
@@ -59,62 +51,62 @@ public class Minesweeper {
 			System.exit(3);
 		}
 
-		final ProblemManager problem = new ProblemManager(max_rows, max_cols, percentMines);
+		final levelCreator problem = new levelCreator(max_rows, max_cols, minesPercentage);
 
 		final int rows = max_rows;
 		final int cols = max_cols;
-		final MineSweeperUIFrame frame = new MineSweeperUIFrame(problem);
+		final GameUI frame = new GameUI(problem);
 		problem.setFrame(frame);
-		final MinesweepingAgent agent = new MinesweepingAgent(problem.getSquares(), problem.getNoOfMines());
+		final SolverAgent agent = new SolverAgent(problem.getTiles(), levelCreator.getNoOfMines());
 		frame.setVisible(true);
 		frame.startTimer();
-		
+
 		problem.updateModel(max_rows / 2,  max_cols/2);
 		frame.repaint();
 		Random objRandom = new Random();
-		while(ProblemManager.noOfMines != 0 && !problem.isGameOver()){
-			Set<Square> safeSquares =  agent.solve();
-			if(ProblemManager.noOfMines == 0){
+		while(levelCreator.noOfMines != 0 && !problem.isGameOver()){
+			Set<Tile> safeTiles =  agent.solve();
+			if(levelCreator.noOfMines == 0){
 				frame.repaint();
 				frame.gameEnded(true);
 				break;
 			}
-			if(safeSquares == null){
-				ReportUtil.guessCount++;
-				Square[][] arrSquares = problem.getSquares();
-				List<Square> lstSquares = new ArrayList<Square>();
-				for(int i=0; i< arrSquares.length; i++){
-					for(int j=0; j<arrSquares.length; j++){
-						if(arrSquares[i][j].isEnabled()
-								&& !arrSquares[i][j].isMarked()){
-							lstSquares.add(arrSquares[i][j]);
+			if(safeTiles == null){
+				ReportTool.guessCount++;
+				Tile[][] tileArray = problem.getTiles();
+				List<Tile> listOfTiles = new ArrayList<Tile>();
+				for(int i=0; i< tileArray.length; i++){
+					for(int j=0; j<tileArray.length; j++){
+						if(tileArray[i][j].isEnabled()
+								&& !tileArray[i][j].isMarked()){
+							listOfTiles.add(tileArray[i][j]);
 						}
 					}
 				}
-				if(lstSquares.size() != 0) {
-					int index = objRandom.nextInt(lstSquares.size());
-					Square randSquare = lstSquares.get(index);
-					System.out.println("GUESSED : " +randSquare.getLocX() +" , " +randSquare.getLocY());
-					problem.updateModel(randSquare.getLocX(), randSquare.getLocY());
+				if(listOfTiles.size() != 0) {
+					int index = objRandom.nextInt(listOfTiles.size());
+					Tile randTile = listOfTiles.get(index);
+					System.out.println("GUESSED : " +randTile.getLocX() +" , " +randTile.getLocY());
+					problem.updateModel(randTile.getLocX(), randTile.getLocY());
 				}
 				frame.repaint();
 			}else{
-				for(Square objSquare : safeSquares){
-					problem.updateModel(objSquare.getLocX(), objSquare.getLocY());
+				for(Tile objTile : safeTiles){
+					problem.updateModel(objTile.getLocX(), objTile.getLocY());
 					frame.repaint();
 				}
 			}
 		}
-		System.out.println("Count : " +ProblemManager.count);
-		if(ProblemManager.noOfMines == 0){
+		System.out.println("Count : " + levelCreator.count);
+		if(levelCreator.noOfMines == 0){
 			frame.gameEnded(true);
 		}else{
 			frame.gameEnded(false);
 		}
-		ReportUtil.print(max_cols, 0, "MODE");
+		ReportTool.print(max_cols, 0, "MODE");
 	}
 	
-	private static void generateReport(){
+	private static void createReport(){
 		int[] cardinality = new int[]{5, 10, 15, 20, 25};
 		int[] modes = new int[]{0,1,2};
 		long startTime = 0L;
@@ -124,7 +116,7 @@ public class Minesweeper {
 				startTime = System.currentTimeMillis();
 				gameOn(j, j, i);
 				endTime = System.currentTimeMillis() - startTime;
-				ReportUtil.writeToFile(j, endTime, getMode(i));
+				ReportTool.writeToFile(j, endTime, getMode(i));
 			}
 			
 		}
@@ -144,16 +136,16 @@ public class Minesweeper {
 	
 	private static void gameOn(int max_rows, int max_cols, int mode){
 	
-		int percentMines = -1;
+		int minesPercentage = -1;
 		switch(mode){
 		case 2:
-			percentMines = EXPERT;
+			minesPercentage = EXPERT;
 			break;
 		case 1:
-			percentMines = MEDIUM;
+			minesPercentage = MEDIUM;
 			break;
 		case 0:
-			percentMines = NAIIVE;
+			minesPercentage = NAIIVE;
 			break;
 		default:
 			System.out.println("USAGE : Minesweeper <max_rows> <max_cols> <mode>\n"
@@ -161,60 +153,60 @@ public class Minesweeper {
 			System.exit(3);
 		}
 
-		final ProblemManager problem = new ProblemManager(max_rows, max_cols, percentMines);
+		final levelCreator problem = new levelCreator(max_rows, max_cols, minesPercentage);
 
 		final int rows = max_rows;
 		final int cols = max_cols;
-		final MineSweeperUIFrame frame = new MineSweeperUIFrame(problem);
+		final GameUI frame = new GameUI(problem);
 		problem.setFrame(frame);
-		final MinesweepingAgent agent = new MinesweepingAgent(problem.getSquares(), problem.getNoOfMines());
+		final SolverAgent agent = new SolverAgent(problem.getTiles(), levelCreator.getNoOfMines());
 		frame.setVisible(true);
 
 		frame.startTimer();
 		problem.updateModel(0, 0);
 		frame.repaint();
 		Random objRandom = new Random();
-		while(ProblemManager.noOfMines != 0 && !problem.isGameOver()){
-			Set<Square> safeSquares =  agent.solve();
-			if(ProblemManager.noOfMines == 0){
+		while(levelCreator.noOfMines != 0 && !problem.isGameOver()){
+			Set<Tile> safeTiles =  agent.solve();
+			if(levelCreator.noOfMines == 0){
 				frame.repaint();
 				frame.gameEnded(true);
 				break;
 			}
-			if(safeSquares == null){
-				ReportUtil.guessCount++;
-				Square[][] arrSquares = problem.getSquares();
-				List<Square> lstSquares = new ArrayList<Square>();
-				for(int i = 0; i < arrSquares.length; i++){
-					for(int j = 0; j < arrSquares.length; j++){
-						if(arrSquares[i][j].isEnabled()
-								&& !arrSquares[i][j].isMarked()){
-							lstSquares.add(arrSquares[i][j]);
+			if(safeTiles == null){
+				ReportTool.guessCount++;
+				Tile[][] tileArray = problem.getTiles();
+				List<Tile> listOfTiles = new ArrayList<Tile>();
+				for(int i = 0; i < tileArray.length; i++){
+					for(int j = 0; j < tileArray.length; j++){
+						if(tileArray[i][j].isEnabled()
+								&& !tileArray[i][j].isMarked()){
+							listOfTiles.add(tileArray[i][j]);
 						}
 					}
 				}
-				if(lstSquares.size() != 0) {
-					int index = objRandom.nextInt(lstSquares.size());
-					Square randSquare = lstSquares.get(index);
-					System.out.println("GUESSED : " +randSquare.getLocX() +" , " +randSquare.getLocY());
-					problem.updateModel(randSquare.getLocX(), randSquare.getLocY());
+				if(listOfTiles.size() != 0) {
+					int index = objRandom.nextInt(listOfTiles.size());
+					Tile randTile = listOfTiles.get(index);
+					System.out.println("GUESSED : " +randTile.getLocX() +" , " +randTile.getLocY());
+					problem.updateModel(randTile.getLocX(), randTile.getLocY());
 				}
 				frame.repaint();
 			}else{
-				for(Square objSquare : safeSquares){
-					problem.updateModel(objSquare.getLocX(), objSquare.getLocY());
+				for(Tile objTile : safeTiles){
+					problem.updateModel(objTile.getLocX(), objTile.getLocY());
 					frame.repaint();
 				}
 			}
 		}
-		System.out.println("Count : " +ProblemManager.count);
-		if(ProblemManager.noOfMines == 0){
+		System.out.println("Count : " + levelCreator.count);
+		if(levelCreator.noOfMines == 0){
 			frame.gameEnded(true);
 		}else{
 			frame.gameEnded(false);
 		}
 		frame.dispose();
-		ReportUtil.print(max_cols, 0, "MODE");
+		ReportTool.print(max_cols, 0, "MODE");
 
 	}
 

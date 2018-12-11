@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class ReportUtil {
+public class ReportTool {
 
 	public static int guessCount = 0;
 	public static int minesAttackedCount = 0;
